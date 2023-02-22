@@ -1,0 +1,26 @@
+services:
+  mongodb:
+    image: "mongo"
+    volumes:
+      - mongodata:/data/db
+  server:
+    build: ./server
+    ports:
+      - 5555:5555
+    volumes:
+      - ./backend:/app
+      - ./app/node_modules
+    depends_on:
+      - mongodb
+  client:
+    build: ./client
+    ports:
+      - 5173:5173
+    volumes:
+      - ./client:/app
+      - ./app/node_modules
+    depends_on:
+      - server
+
+volumes:
+  mongodata:
